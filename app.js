@@ -10,6 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 const questions = require("./lib/questions");
+const { manager } = require("./lib/questions");
 //const { create } = require("./lib/questions");
 
 
@@ -19,7 +20,7 @@ function start(){
     .then(function(data){
         switch(data.employeeRole){
             case "Engineer":
-            
+                createEngineer(data);
             break;
             case"Intern":
             //
@@ -59,7 +60,22 @@ function createManager(data) {
             }
 })
 };
-
+function createEngineer(data) {
+    inquirer
+        .prompt(questions.engineer)
+        .then(function(engineerObj){
+            let newEngineer = new Engineer(data.name, data.id, data.email, engineerObj.engineerGithub);
+            employees.push(newEngineer);
+            console.log("A new engineer has been added to your team!", newEngineer);
+            if (!engineerObj.newEmployee) {
+                console.log("done");
+            }
+            else {
+                start();
+            }
+            
+        })
+}
 //createManager();
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
