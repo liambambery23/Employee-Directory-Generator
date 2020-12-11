@@ -23,7 +23,7 @@ function start(){
                 createEngineer(data);
             break;
             case"Intern":
-            //
+            createIntern(data);
             break;
             case "Manager":
                 createManager(data);
@@ -63,7 +63,7 @@ function createManager(data) {
 function createEngineer(data) {
     inquirer
         .prompt(questions.engineer)
-        .then(function(engineerObj){
+        .then(function(engineerObj) {
             let newEngineer = new Engineer(data.name, data.id, data.email, engineerObj.engineerGithub);
             employees.push(newEngineer);
             console.log("A new engineer has been added to your team!", newEngineer);
@@ -74,6 +74,22 @@ function createEngineer(data) {
                 start();
             }
             
+        })
+};
+
+function createIntern(data) {
+    inquirer
+        .prompt(questions.intern)
+        .then(function(internObj) {
+            let newIntern = new Intern(data.name, data.id, data.email, internObj.internSchool);
+            employees.push(newIntern);
+            console.log("A new engineer has been added to your team!", newIntern);
+            if (!internObj.newEmployee) {
+                console.log(done);
+            }
+            else {
+                start();
+            }
         })
 }
 //createManager();
