@@ -11,10 +11,11 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const questions = require("./lib/questions");
 const { manager } = require("./lib/questions");
-//const { create } = require("./lib/questions");
+
 
 
 const employees = [];
+
 function start(){
     inquirer.prompt(questions.mainMenu)
     .then(function(data){
@@ -23,11 +24,10 @@ function start(){
                 createEngineer(data);
             break;
             case"Intern":
-            createIntern(data);
+                createIntern(data);
             break;
             case "Manager":
                 createManager(data);
-            
         }
     })
 }
@@ -42,23 +42,19 @@ function createManager(data) {
     
     inquirer
         .prompt(questions.manager)
-        .then(function(managerObj){
+        .then(function(managerObj) {
            
             let newManager = new Manager(data.name, data.id, data.email, managerObj.officeNumber);
             employees.push(newManager);
             console.log("A new manager has been added to the team!", newManager);
             if(!managerObj.newEmployee){
-                //write you html
                 console.log("done");
-                console.log(render(employees));
-                //write to file
-
+                writeTeam();
             }
             else{
-                //add more to your team
                 start();
             }
-})
+        })
 };
 function createEngineer(data) {
     inquirer
@@ -69,11 +65,11 @@ function createEngineer(data) {
             console.log("A new engineer has been added to your team!", newEngineer);
             if (!engineerObj.newEmployee) {
                 console.log("done");
+                writeTeam();
             }
             else {
                 start();
             }
-            
         })
 };
 
@@ -85,13 +81,22 @@ function createIntern(data) {
             employees.push(newIntern);
             console.log("A new engineer has been added to your team!", newIntern);
             if (!internObj.newEmployee) {
-                console.log(done);
+                console.log("done");
+                writeTeam();
             }
             else {
                 start();
             }
-        })
+        });
+};
+
+function writeTeam() {
+    fs.writeFile(outputPath, render(employees), function (err) {
+        if (err) throw err;
+    });
+    console.log("Your team page has been created!")
 }
+
 //createManager();
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
