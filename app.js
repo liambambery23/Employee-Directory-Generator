@@ -9,11 +9,58 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const questions = require("./lib/questions");
+//const { create } = require("./lib/questions");
+
+
+const employees = [];
+function start(){
+    inquirer.prompt(questions.mainMenu)
+    .then(function(data){
+        switch(data.employeeRole){
+            case "Engineer":
+            
+            break;
+            case"Intern":
+            //
+            break;
+            case "Manager":
+                createManager(data);
+            
+        }
+    })
+}
+
+start();
 
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+function createManager(data) {
+    console.log(data)
+    
+    inquirer
+        .prompt(questions.manager)
+        .then(function(managerObj){
+           
+            let newManager = new Manager(data.name, data.id, data.email, managerObj.officeNumber);
+            employees.push(newManager);
+            console.log("A new manager has been added to the team!", newManager);
+            if(!managerObj.newEmployee){
+                //write you html
+                console.log("done");
+                console.log(render(employees));
+                //write to file
 
+            }
+            else{
+                //add more to your team
+                start();
+            }
+})
+};
+
+//createManager();
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
@@ -26,7 +73,7 @@ const render = require("./lib/htmlRenderer");
 
 // HINT: each employee type (manager, engineer, or intern) has slightly different
 // information; write your code to ask different questions via inquirer depending on
-// employee type.
+// employee type.S
 
 // HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
 // and Intern classes should all extend from a class named Employee; see the directions
