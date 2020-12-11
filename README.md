@@ -7,7 +7,9 @@ This application exists to simplify the making of a team directory.
 
  
 ## Screenshots
-Include logo/demo screenshot etc.
+Please find a link to a video of the applications functionality [here](https://drive.google.com/file/d/1h33jZ377afHAnKzVRQIaUw2T5aICPMu2/view)
+
+![screenshot of application](/lib/assets/Application-Screenshot.png)
 
 ## Tech/framework used
 Bootstrap 
